@@ -2,78 +2,67 @@
 
 Complete setup instructions for the FitLab coaching platform.
 
-## Project Overview
-
-FitLab is a modern AI-powered coaching platform with:
-- **Frontend**: Next.js 14 + Tailwind + ShadCN
-- **Backend**: NestJS + Supabase + PostgreSQL
-- **Mobile**: React Native + Expo (coming soon)
-
 ## Prerequisites
 
-Before you begin, ensure you have the following installed:
-
-- **Node.js** (v18 or higher)
-- **npm** (v9 or higher)
+- **Node.js** v18+
+- **npm** v9+
+- **Docker** (for local Postgres and Redis)
 - **Git**
-- **Supabase Account** (free tier available at https://supabase.com)
 
-## Initial Setup
+## Quick Start
 
-### Step 1: Create Supabase Project
-
-1. Go to [https://supabase.com](https://supabase.com) and sign up/login
-2. Click "New Project"
-3. Choose your organization
-4. Enter project details:
-   - **Name**: FitLab
-   - **Database Password**: Generate a strong password (save this!)
-   - **Region**: Choose closest to your users
-5. Click "Create new project" (takes ~2 minutes)
-6. Once ready, go to **Project Settings > API**
-7. Copy the following (you'll need these):
-   - Project URL
-   - `anon` `public` key
-   - `service_role` `secret` key
-8. Go to **Project Settings > Database**
-9. Copy the **Connection String** (URI format)
-
-### Step 2: Clone the Repository
+### 1. Start Infrastructure
 
 ```bash
-git clone https://github.com/your-username/fitlab.git
+docker compose up -d
 ```
 
-### Step 3: Install Backend Dependencies
+This starts:
+- PostgreSQL 16 on port 5432
+- Redis 7 on port 6379
+
+### 2. Setup Backend
 
 ```bash
 cd backend
 npm install
-```
-
-### Step 4: Install Frontend Dependencies
-
-```bash
-cd frontend
-npm install
-```
-
-### Step 5: Configure Backend Environment
-
-```bash
-cd backend
 cp .env.example .env
 ```
 
-Edit `backend/.env` and update:
-- Database credentials (use the Supabase connection string)
-- Generate a secure JWT_SECRET: `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`
-- Add your Stripe and OpenAI API keys (optional for initial development)
+Edit `backend/.env` with your configuration:
 
-### Step 6: Configure Frontend Environment
+```env
+NODE_ENV=development
+PORT=3001
+API_PREFIX=api/v1
+
+DATABASE_URL=postgresql://fitlab:fitlab_dev_password@localhost:5432/fitlab_db
+REDIS_URL=redis://localhost:6379
+
+JWT_SECRET=<generate with: node -e "console.log(require('crypto').randomBytes(32).toString('hex'))">
+JWT_EXPIRATION=15m
+JWT_REFRESH_EXPIRATION=7d
+
+FRONTEND_URL=http://localhost:3000
+```
+
+For Supabase, see [SUPABASE_SETUP.md](./SUPABASE_SETUP.md).
+
+### 3. Start Backend
+
+```bash
+npm run start:dev
+```
+
+Backend runs on: `http://localhost:3001/api/v1`
+
+On first run, TypeORM will automatically create all database tables in development mode.
+
+### 4. Setup Frontend
 
 ```bash
 cd frontend
+npm install
 ```
 
 Create `frontend/.env.local`:
@@ -82,138 +71,102 @@ Create `frontend/.env.local`:
 NEXT_PUBLIC_API_URL=http://localhost:3001/api/v1
 ```
 
-## Running the Application
-
-### Start Backend (Terminal 1)
+### 5. Start Frontend
 
 ```bash
-cd backend
-npm run start:dev
-```
-
-Backend will run on: http://localhost:3001
-
-### Start Frontend (Terminal 2)
-
-```bash
-cd frontend
 npm run dev
 ```
 
-Frontend will run on: http://localhost:3000
+Frontend runs on: `http://localhost:3000`
 
 ## Verify Installation
 
-1. **Backend Health Check**:
-   - Open http://localhost:3001/api/v1
-   - You should see the API running
+1. **Backend**: Visit `http://localhost:3001/api/v1` — should see the API running
+2. **Frontend**: Visit `http://localhost:3000` — should see the landing page
+3. **Database**: Check tables were created in your database
 
-2. **Frontend**:
-   - Open http://localhost:3000
-   - You should see the Next.js app
+## Development Commands
 
-3. **Database**:
-   - Verify your connection string is correct by running a test query in the Supabase SQL Editor
+### Backend
 
-## Development Workflow
+| Command | Description |
+|---------|-------------|
+| `npm run start:dev` | Development mode with hot reload |
+| `npm run build` | Production build |
+| `npm run start:prod` | Run production build |
+| `npm run test` | Run unit tests |
+| `npm run lint` | Run ESLint |
+| `npm run seed` | Seed database with exercise data |
 
-### Backend Development
+### Frontend
 
-- Code is in `backend/src/`
-- Hot reload enabled with `npm run start:dev`
-- API docs: Add Swagger in future
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Development server (Turbopack) |
+| `npm run build` | Production build |
+| `npm run start` | Start production build |
+| `npm run lint` | Run ESLint |
 
-### Frontend Development
+## Project Structure
 
-- Code is in `frontend/src/`
-- Hot reload enabled with `npm run dev`
-- Use Tailwind for styling
-- Use ShadCN components
+```
+fitlab/
+├── backend/                  # NestJS API server
+│   ├── src/
+│   │   ├── modules/         # 13 feature modules
+│   │   ├── common/          # Guards, interceptors, decorators
+│   │   ├── database/seeds/  # Seed scripts
+│   │   ├── app.module.ts
+│   │   └── main.ts
+│   └── .env.example
+├── frontend/                 # Next.js web app
+│   ├── src/
+│   │   ├── app/             # App Router pages
+│   │   ├── components/      # UI + layout components
+│   │   ├── hooks/           # Custom React hooks
+│   │   ├── lib/             # API client, utils, providers
+│   │   ├── stores/          # Zustand state stores
+│   │   └── types/           # TypeScript types
+│   └── public/
+├── docker-compose.yml        # Postgres + Redis
+└── docs/                    # Setup guides
+```
 
-## Common Issues
+## Troubleshooting
 
 ### Port Already in Use
 
-If ports 3000 or 3001 are in use:
-
 ```bash
-# Windows - Find and kill process
+# Windows
 netstat -ano | findstr :3000
 taskkill /PID <PID> /F
 ```
 
 ### Database Connection Failed
 
-1. Ensure your Supabase connection string is correct
-2. Check your database credentials in `backend/.env`
-3. Verify your IP isn't blocked (Supabase allows all IPs by default)
+1. Verify `DATABASE_URL` in `backend/.env` is correct
+2. Ensure Docker containers are running: `docker compose ps`
+3. Check Postgres is accepting connections: `docker compose logs postgres`
 
 ### Module Not Found Errors
 
 ```bash
-# Clear caches and reinstall
 rm -rf node_modules package-lock.json
 npm install
 ```
 
+### Tables Not Creating
+
+- Verify `NODE_ENV` is not `production` (TypeORM sync is disabled in production)
+- Check entity imports in module files
+- Look for TypeScript compilation errors in startup logs
+
+## Using Supabase
+
+For production (or managed Postgres), see [SUPABASE_SETUP.md](./SUPABASE_SETUP.md) for Supabase setup instructions. Replace the `DATABASE_URL` in your `.env` with the Supabase connection string.
+
 ## Next Steps
 
-1. **Test Authentication**: Create a user via API
-2. **Build Features**: Start with coach dashboard
-3. **Add Components**: Use ShadCN UI components
-4. **Integrate AI**: Add OpenAI workout generator
-
-## Useful Commands
-
-### Backend
-
-```bash
-# Development
-npm run start:dev
-
-# Build
-npm run build
-
-# Production
-npm run start:prod
-
-# Tests
-npm run test
-
-# Lint
-npm run lint
-```
-
-### Frontend
-
-```bash
-# Development
-npm run dev
-
-# Build
-npm run build
-
-# Start production build
-npm run start
-
-# Lint
-npm run lint
-```
-
-## Getting Help
-
-- Check README files in backend/ and frontend/
-- Review the main README.md for project overview
-- Consult the blueprint in README.md
-
-## Database Management
-
-### View Data
-
-- Use the Supabase SQL Editor to run queries and view data
-
-### Reset Database
-
-- Warning: This will delete all data in your Supabase database
-- To reset your database, delete all tables and data in the Supabase SQL Editor
-- The database will auto-create tables when you restart the backend in development mode
+1. Seed the exercise database: `cd backend && npm run seed`
+2. Test auth: `POST /api/v1/auth/register` with name, email, password, role
+3. Start building dashboard features connected to the API

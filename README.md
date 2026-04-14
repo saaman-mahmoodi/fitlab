@@ -1,557 +1,181 @@
-🧱 FITLAB — FULL BLUEPRINT
-
-A modern, AI-first coaching platform for fitness professionals.
-
-⭐ 1. BRANDING — Identity & Positioning
-Name: FitLab
-
-Communicates:
-
-Precision
-
-Experimentation
-
-Results
-
-Modern & tech-forward
-
-Brand direction
-
-Minimalistic
-
-Clean fitness-science aesthetic
-
-High performance & professional
-
-Color palette
-
-Primary: Deep Blue (#0A3AFF) — performance, trust
-
-Secondary: Neon Lime (#A6FF3F) — energy
-
-Neutral: Charcoal (#111111), Gray (#F5F5F5)
-
-Typography
-
-Heading: Inter / Poppins (rounded tech look)
-
-Body: Inter / SF Pro
-
-Logo concept
-
-Abstract “F” shaped like a barbell or heart-rate waveform
-
-Circular lab-like emblem for app icon
-
-⭐ 2. TARGET USERS
-Primary user
-
-Online fitness coaches
-
-1:1 coaching
-
-Hybrid coaching
-
-Online program creators
-
-Influencers selling coaching
-
-Secondary user
-
-Gyms, small teams, and studios needing:
-
-Appointment scheduling
-
-Billing
-
-Client app
-
-Why coaches switch to FitLab
-
-Faster
-
-Cheaper
-
-Beautiful modern UX
-
-AI automations
-
-Fully customizable client app
-
-Full control over workflows
-
-No upsells every 2 minutes like Trainerize
-
-⭐ 3. CORE VALUE PROPOSITION
-
-“The all-in-one AI-powered coaching platform that lets you coach more clients in less time — beautifully.”
-
-FitLab beats competitors on:
-
-✔ Speed
-✔ AI automation
-✔ Customization (client app, forms, workflows)
-✔ Modern UI
-✔ Fair pricing
-✔ Simplicity
-⭐ 4. FEATURE SET (VERSION 1 → VERSION 3)
-PHASE 1 — MVP (10 weeks)
-Coach Dashboard
-
-Client list
-
-Messaging system
-
-Workout builder
-
-Exercise library
-
-Progress tracking (graphs, weight, photos, metrics)
-
-Goals & habits
-
-Activity calendar
-
-Basic AI assistant:
-
-Generate a 12-week plan
-
-Adjust workouts
-
-Weekly client summaries
-
-Client App (React Native)
-
-View workouts
-
-Log sets/reps/weights
-
-View progress
-
-Chat with coach
-
-Upload pictures/videos
-
-Monetization
-
-Stripe integration
-
-One subscription for all coaches
-
-Coaches can charge clients via Stripe
-
-PHASE 2 — PRO PLATFORM (12–20 weeks)
-Groups & Challenges
-
-Group chat
-
-Group challenges
-
-Leaderboards
-
-Community feed
-
-Nutrition Module
-
-Custom meal plans
-
-Food diary
-
-Macro tracking
-
-AI meal generator
-
-Automations (Game Changer)
-
-Custom flows:
-
-If client misses 2 workouts → send message
-
-If weight hasn’t changed in 10 days → request food log
-
-If client logs PR → send automated praise message
-
-Custom Forms & Assessments
-
-Intake forms
-
-Movement assessments
-
-Custom questionnaires
-
-Custom onboarding flows
-
-Payments & Billing
-
-Recurring coaching subscriptions
-
-Programs & digital products
-
-Appointment payments
-
-Coupon codes
-
-PHASE 3 — ENTERPRISE FEATURES (long-term)
-Custom-branded Mobile App
-
-Coach brand colors
-
-Logo
-
-Published on App Store + Google Play
-
-Automatic updates via Expo EAS
-
-Advanced Video AI
-
-Form analysis
-
-Repetition counting
-
-Movement scoring
-
-Gym/Studio Management
-
-Multi-coach environments
-
-Room reservations
-
-Team dashboards
-
-Payroll integration
-
-⭐ 5. PRICING STRATEGY (STRONGER THAN COMPETITORS)
-Starter — $19/mo
-
-Up to 20 clients
-
-Messaging
-
-Workouts
-
-Progress tracking
-
-Growth — $49/mo
-
-Unlimited clients
-
-Groups
-
-Nutrition
-
-All automation flows
-
-Pro — $79/mo
-
-Everything in Growth
-
-Custom forms
-
-Wearable integration
-
-Advanced reporting
-
-Elite — $149/mo
-
-Custom-branded mobile app
-
-Priority support
-
-Add-ons ($10–$20/mo each)
-
-Additional coaches
-
-Advanced video AI
-
-Community hub pro features
-
-This pricing destroys Trainerize’s $250+/mo for branded app.
-
-⭐ 6. UI/UX BLUEPRINT (PAGE BY PAGE)
-🎨 Website Pages
-1. Homepage
-
-Sections:
-
-Hero: “Your coaching. Supercharged by AI.”
-
-Feature cards
-
-AI automation demo
-
-Screenshots of mobile app
-
-Pricing
-
-Testimonials
-
-CTA (Try free for 14 days)
-
-2. Pricing
-
-Clear, simple comparison table.
-
-3. Product
-
-Coaching dashboard
-
-Client app
-
-AI automations
-
-Nutrition
-
-Groups
-
-4. For Teams
-
-Multi-coach management
-
-Admin controls
-
-Permissions
-
-5. Login / Signup
-
-Simple, modern, one-page onboarding.
-
-🖥 Coach Dashboard Layout
-Left Sidebar
-
-Dashboard
-
-Clients
-
-Workouts
-
-Exercises
-
-Groups
-
-Nutrition
-
-Billing
-
-Settings
-
-Main View
-
-Clean white cards
-
-Modals for quick actions
-
-Real-time updates
-
-📱 Client App Layout
-
-Home tab (today’s workout)
-
-Workouts tab
-
-Progress tab
-
-Chat tab
-
-Profile
-
-⭐ 7. TECH STACK — MODERN, FAST, SCALABLE
-Frontend
-
-Next.js 14
-
-Tailwind
-
-ShadCN components
-
-Zustand or TanStackQuery
-
-Backend
-
-NestJS (Node.js)
-
-PostgreSQL
-
-Redis
-
-WebSockets
-
-Hosting
-
-Vercel (frontend)
-
-AWS ECS or DigitalOcean App Platform (backend)
-
-AWS S3 for files
-
-Cloudflare CDN
-
-Mobile
-
-React Native + Expo
-
-Push notifications
-
-Wearable integrations
-
-AI
-
-OpenAI GPT models (workout generation, progress summaries)
-
-MediaPipe MoveNet (form detection)
-
-AWS Lambda for video processing
-
-⭐ 8. DATABASE SCHEMA (SaaS-level)
-Users
-id  
-name  
-email  
-role (coach/client/admin)  
-stripe_customer_id  
-
-Coaches
-id  
-user_id  
-business_name  
-custom_branding  
-
-Clients
-id  
-coach_id  
-user_id  
-goals  
-metrics  
-tags  
-status  
-
-Workouts
-id  
-client_id  
-title  
-date  
-notes  
-generated_by_ai  
-
-Exercises
-id  
-name  
-category  
-video_url  
-instructions  
-equipment  
-
-Sets
-id  
-workout_id  
-exercise_id  
-sets  
-reps  
-weight  
-rir  
-
-Automations
-id  
-coach_id  
-trigger  
-condition  
-action  
-
-Messages
-id  
-sender_id  
-receiver_id  
-content  
-attachments  
-timestamp  
-
-Subscriptions
-id  
-coach_id  
-plan  
-status  
-renewal_date  
-stripe_subscription_id  
-
-⭐ 9. DEVELOPMENT TIMELINE (REALISTIC)
-Phase 1 (Weeks 1–10) — MVP
-
-Auth
-
-Coach dashboard
-
-Client app
-
-Messaging
-
-Workout builder
-
-AI workout generator
-
-Phase 2 (Weeks 11–20) — Full Platform
-
-Nutrition
-
-Groups
-
-Advanced tracking
-
-Automations
-
-Billing
-
-Phase 3 (Weeks 21–32) — Premium
-
-Custom app builder
-
-Wearable integrations
-
-Video AI
-
-⭐ 10. GO-TO-MARKET STRATEGY (Guaranteed Traction)
-Step 1 — Build for a niche
-
-Choose:
-Online personal trainers & hybrid coaches (1–1 coaching).
-
-Step 2 — Create TikTok & IG content
-
-Daily posts:
-
-AI workout generator demo
-
-Coach workflow demo
-
-“How I manage clients”
-
-Transformations
-
-Step 3 — Outreach
-
-DM 100 coaches/day:
-
-"Want to beta test the fastest fitness coaching platform? Free for 2 months."
-
-Step 4 — Build a community
-
-Private Discord:
-
-Weekly updates
-
-Feature voting
-
-Bug reports
-
-Step 5 — Upsell custom-branded apps
-
-This is where the big revenue comes.
-
-⭐ 11. REVENUE PROJECTION (REALISTIC)
-
-If you acquire:
-
-100 coaches → $5,000/mo
-500 coaches → $25,000/mo
-2,000 coaches → $100,000/mo
-10,000 coaches → $500,000/mo
-
-Custom app upsells add another ~$15k–$100k/mo.
+# FitLab
+
+> AI-powered coaching platform for fitness professionals.
+
+## Tech Stack
+
+**Backend**
+- NestJS 10.3 + TypeScript
+- PostgreSQL via Supabase (TypeORM)
+- Redis (Upstash)
+- Passport JWT authentication
+- Stripe (payments), OpenAI + Ollama (AI services)
+- WebSocket messaging (Socket.io)
+
+**Frontend**
+- Next.js 15 + React 19
+- Tailwind CSS 4 + ShadCN UI
+- Zustand (state), TanStack Query (server state)
+- Socket.io client (real-time)
+
+**Infrastructure**
+- Docker Compose (Postgres 16, Redis 7)
+- Supabase (managed Postgres, auth, storage)
+
+## Project Structure
+
+```
+fitlab/
+├── backend/                   # NestJS API
+│   └── src/
+│       ├── app.module.ts      # Root module
+│       ├── main.ts            # Entry point (port 3001)
+│       ├── common/            # Shared guards, interceptors, decorators, filters
+│       ├── database/seeds/    # Seed scripts (exercises)
+│       └── modules/
+│           ├── ai/            # AI workout generation (OpenAI, Ollama)
+│           ├── auth/          # JWT + local auth, register/login/refresh
+│           ├── automations/   # Trigger/action workflow engine
+│           ├── clients/       # Client management (CRUD)
+│           ├── coaches/       # Coach profiles & branding
+│           ├── exercises/     # Exercise library
+│           ├── forms/        # Custom intake forms & assessments
+│           ├── groups/       # Training groups & challenges
+│           ├── messages/     # Real-time messaging (WebSocket gateway)
+│           ├── notifications/# Push & in-app notifications
+│           ├── nutrition/     # Food logs & meal plans
+│           ├── progress/     # Weight logs, measurements, progress photos
+│           ├── subscriptions/# Stripe billing & subscriptions
+│           ├── users/        # User accounts (coach/client roles)
+│           └── workouts/     # Workout builder with sets/reps/RIR
+├── frontend/                  # Next.js app
+│   └── src/
+│       ├── app/
+│       │   ├── page.tsx       # Landing page
+│       │   ├── login/         # Login page
+│       │   ├── signup/        # Signup page (role selection)
+│       │   └── (coach)/       # Coach dashboard routes
+│       │       ├── layout.tsx # Dashboard layout with sidebar
+│       │       └── dashboard/
+│       │           ├── page.tsx          # Overview
+│       │           ├── ai/              # AI workout generator
+│       │           ├── clients/         # Client management
+│       │           ├── exercises/       # Exercise library
+│       │           ├── messages/        # Real-time chat
+│       │           ├── progress/        # Progress tracking
+│       │           ├── settings/         # Coach settings
+│       │           └── workouts/        # Workout builder
+│       ├── components/
+│       │   ├── layout/        # Sidebar component
+│       │   ├── notifications/ # Notification bell
+│       │   └── ui/           # 16 ShadCN components
+│       ├── hooks/             # useSocket (WebSocket)
+│       ├── lib/
+│       │   ├── api/          # API client (auth, AI, messages, notifications, resources)
+│       │   ├── auth-guard.tsx # Route protection
+│       │   ├── providers/    # App providers
+│       │   └── utils.ts      # Utility functions
+│       ├── stores/            # Zustand (auth, notifications)
+│       └── types/             # TypeScript type definitions
+├── docker-compose.yml         # Postgres 16 + Redis 7
+├── .gitignore
+├── SETUP.md                   # Detailed setup instructions
+├── SUPABASE_SETUP.md          # Supabase configuration guide
+└── PROGRESS.md                # Development progress tracker
+```
+
+## API Endpoints
+
+### Auth (`/api/v1/auth`)
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/auth/register` | Register new user |
+| POST | `/auth/login` | Login (local strategy) |
+| POST | `/auth/refresh` | Refresh JWT token |
+
+### Users (`/api/v1/users`) — Authenticated
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/users/me` | Get current user profile |
+| PUT | `/users/me` | Update profile |
+| PUT | `/users/me/password` | Change password |
+
+### Coaches (`/api/v1/coaches`) — Coach role required
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/coaches/me` | Get coach profile |
+| PUT | `/coaches/me` | Update coach profile |
+
+### Clients (`/api/v1/clients`) — Coach role required
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/clients` | List clients (paginated) |
+| GET | `/clients/:id` | Get client by ID |
+| POST | `/clients` | Create client |
+| PUT | `/clients/:id` | Update client |
+| DELETE | `/clients/:id` | Deactivate client |
+
+### Workouts (`/api/v1/workouts`) — Authenticated
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/workouts` | List workouts (by coach, filterable by clientId) |
+| GET | `/workouts/:id` | Get workout |
+| POST | `/workouts` | Create workout (coach) |
+| PUT | `/workouts/:id` | Update workout (coach) |
+| DELETE | `/workouts/:id` | Delete workout (coach) |
+| POST | `/workouts/:id/sets` | Add set to workout (coach) |
+| PUT | `/workouts/sets/:setId` | Update set (coach/client) |
+| DELETE | `/workouts/sets/:setId` | Remove set (coach) |
+
+### Exercises (`/api/v1/exercises`) — Authenticated
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/exercises` | List exercises (filterable by category, equipment) |
+| GET | `/exercises/:id` | Get exercise |
+| POST | `/exercises` | Create exercise (coach) |
+| PUT | `/exercises/:id` | Update exercise (coach) |
+| DELETE | `/exercises/:id` | Delete exercise (coach) |
+
+### AI (`/api/v1/ai`) — Authenticated
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/ai/generate-workout` | Generate AI workout (coach) |
+| POST | `/ai/adjust-workout` | Adjust workout via AI (coach) |
+| POST | `/ai/progress-summary` | Generate progress summary (coach) |
+| POST | `/ai/chat` | AI chat assistant |
+
+Additional modules (messages, notifications, progress, nutrition, automations, subscriptions, forms, groups) follow similar REST patterns with appropriate role guards.
+
+## Getting Started
+
+```bash
+# 1. Start infrastructure
+docker compose up -d
+
+# 2. Install backend dependencies
+cd backend && npm install
+
+# 3. Configure environment
+cp backend/.env.example backend/.env
+# Edit backend/.env with your DATABASE_URL, JWT_SECRET, etc.
+
+# 4. Start backend
+npm run start:dev
+
+# 5. Install frontend dependencies and start
+cd ../frontend && npm install
+npm run dev
+```
+
+See [SETUP.md](./SETUP.md) for detailed instructions and [SUPABASE_SETUP.md](./SUPABASE_SETUP.md) for Supabase configuration.
+
+## Brand
+
+- **Primary**: Deep Blue (#0A3AFF) — performance, trust
+- **Secondary**: Neon Lime (#A6FF3F) — energy
+- **Neutral**: Charcoal (#111111), Gray (#F5F5F5)
+- **Typography**: Inter
+
+## License
+
+MIT

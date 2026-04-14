@@ -1,307 +1,155 @@
 # FitLab Development Progress
 
-**Project Status**: Initial Development Phase
-**Last Updated**: November 29, 2024
+**Project Status**: Active Development — MVP Phase
+**Last Updated**: April 2026
 
-## ✅ Completed
-
-### Project Structure
-- [x] Root project directory created
-- [x] Backend and frontend folders initialized
-- [x] Supabase configuration for PostgreSQL
-- [x] Environment configuration templates
-- [x] Comprehensive documentation (README, SETUP guide)
+## Completed
 
 ### Backend (NestJS)
-- [x] Full NestJS project structure
-- [x] Database entities for all core features:
-  - Users (coaches and clients)
-  - Coaches (profiles and branding)
-  - Clients (metrics and goals)
-  - Workouts (plans and scheduling)
-  - Exercises (library with categories)
-  - Messages (real-time messaging)
-  - Automations (workflow triggers)
-  - Subscriptions (billing plans)
-- [x] Authentication system:
-  - JWT strategy
-  - Local strategy
-  - Auth guards
-  - Register/login endpoints
-  - Password hashing with bcrypt
-- [x] Module structure for all features
-- [x] TypeORM configuration
-- [x] Main application bootstrap
+- [x] Project structure and configuration (NestJS 10.3, TypeORM, Passport JWT)
+- [x] Global error handling (AllExceptionsFilter)
+- [x] Request logging and response transformation interceptors
+- [x] Rate limiting (ThrottlerModule)
+- [x] Scheduled tasks (ScheduleModule)
+- [x] **Auth module**: Register, login, JWT/local strategies, token refresh
+- [x] **Users module**: Profile CRUD, password change, role-based guards
+- [x] **Coaches module**: Coach profile and business branding
+- [x] **Clients module**: Full CRUD with pagination, search, coach-scoped listing
+- [x] **Exercises module**: Full CRUD, category/equipment filtering
+- [x] **Workouts module**: Full CRUD with sets/reps/RIR, nested set management
+- [x] **Progress module**: Weight logs, measurements, progress photos
+- [x] **Nutrition module**: Food logs, meal plans
+- [x] **Messages module**: Real-time messaging with WebSocket gateway
+- [x] **Notifications module**: Push and in-app notification system
+- [x] **Automations module**: Trigger/action workflow engine
+- [x] **Subscriptions module**: Stripe billing integration
+- [x] **AI module**: OpenAI + Ollama providers, workout generation, progress summaries, chat
+- [x] **Forms module**: Custom intake forms and assessments
+- [x] **Groups module**: Training groups and challenges
+- [x] Database seed script (exercises)
+- [x] Docker Compose for local Postgres 16 + Redis 7
 
 ### Frontend (Next.js)
-- [x] Next.js 14 app initialized with Tailwind CSS
-- [x] Modern landing page with:
-  - Hero section
-  - Features showcase
-  - Pricing preview
-  - CTA sections
-  - Professional footer
-- [x] Authentication pages:
-  - Login page
-  - Signup page (with role selection)
-  - OAuth placeholder buttons
-- [x] Brand colors implemented (#0A3AFF, #A6FF3F)
-- [x] Inter font configured
-- [x] Responsive design
+- [x] Next.js 15 + React 19 + Tailwind CSS 4 + TypeScript
+- [x] Landing page with hero, features, pricing, CTA sections
+- [x] Login and signup pages with role selection
+- [x] Brand colors (#0A3AFF, #A6FF3F) and Inter font
+- [x] Responsive layout
+- [x] 16 ShadCN UI components (avatar, badge, button, card, dialog, dropdown-menu, input, label, scroll-area, select, separator, sheet, sonner, table, tabs, textarea)
+- [x] Coach dashboard layout with sidebar navigation
+- [x] Dashboard pages: overview, clients, workouts, exercises, progress, messages, AI, settings
+- [x] API client layer (auth, AI, messages, notifications, resources)
+- [x] Auth guard for protected routes
+- [x] Zustand stores (auth, notifications)
+- [x] WebSocket hook (useSocket)
+- [x] TypeScript type definitions for all domain models
+- [x] App providers setup
 
-### Documentation
-- [x] Main README with project overview
-- [x] Backend README with API documentation
-- [x] SETUP.md with step-by-step instructions
-- [x] PROGRESS.md (this file)
-- [x] Environment variable templates
+### Infrastructure & Documentation
+- [x] Root .gitignore (env files, node_modules, build dirs, IDE files)
+- [x] Docker Compose (Postgres 16-alpine, Redis 7-alpine) with health checks
+- [x] Supabase configuration docs
+- [x] Step-by-step setup guide
 
-## 🚧 In Progress
-
-### Dependencies
-- [ ] Backend dependencies need to be installed (`npm install` in backend/)
-- [ ] Frontend dependencies already installed
-- [ ] Database containers need to be started
-
-## 📋 Next Steps (Priority Order)
-
-### Phase 1 - Core Setup (Next 1-2 hours)
-1. **Set Up Supabase**
-   - Create project at https://supabase.com
-   - Copy DATABASE_URL and API keys
-   - Optional: Set up Upstash Redis
-
-2. **Install Dependencies**
-   ```bash
-   cd backend
-   npm install
-   ```
-
-3. **Configure Environment Variables**
-   - Copy `.env.example` to `.env` in backend/
-   - Add Supabase DATABASE_URL
-   - Add Supabase keys
-   - Generate JWT secret
-   - Add Redis URL (optional for MVP)
-
-4. **Test Backend**
-   ```bash
-   cd backend
-   npm run start:dev
-   ```
-   Tables will auto-create in Supabase!
-
-5. **Test Frontend**
-   ```bash
-   cd frontend
-   npm run dev
-   ```
-
-### Phase 2 - API Integration (Week 1)
-- [ ] Create API client in frontend
-- [ ] Connect login/signup pages to backend
-- [ ] Implement JWT token storage
-- [ ] Create protected route wrapper
-- [ ] Add API error handling
-
-### Phase 3 - Coach Dashboard (Week 2-3)
-- [ ] Dashboard layout with sidebar
-- [ ] Client list view
-- [ ] Client detail view
-- [ ] Basic workout builder
-- [ ] Progress tracking charts
-- [ ] Messaging interface
-
-### Phase 4 - Workout Features (Week 4-5)
-- [ ] Exercise library UI
-- [ ] Workout builder with drag-and-drop
-- [ ] Calendar view for workouts
-- [ ] Workout templates
-- [ ] Copy/duplicate workouts
-
-### Phase 5 - AI Integration (Week 6)
-- [ ] OpenAI API integration
-- [ ] Workout generation prompt engineering
-- [ ] AI suggestions for exercises
-- [ ] Progress summary generation
-- [ ] Automated check-in messages
-
-### Phase 6 - Messaging (Week 7)
-- [ ] WebSocket setup
-- [ ] Real-time chat UI
-- [ ] File upload (images, videos)
-- [ ] Message notifications
-- [ ] Unread message counter
-
-### Phase 7 - Client App (Week 8-10)
-- [ ] React Native setup
-- [ ] Workout viewing
-- [ ] Set logging
-- [ ] Progress tracking
-- [ ] Photo uploads
-- [ ] Push notifications
-
-### Phase 8 - Billing (Week 9)
-- [ ] Stripe integration
-- [ ] Subscription management
-- [ ] Payment processing
-- [ ] Webhook handling
-- [ ] Invoice generation
-
-### Phase 9 - Polish & Testing (Week 10)
-- [ ] Error handling
-- [ ] Loading states
-- [ ] Empty states
-- [ ] Toast notifications
-- [ ] E2E testing
-- [ ] Performance optimization
-
-## 🎯 MVP Features (First 10 Weeks)
-
-### Core Functionality
-- [x] User authentication
-- [ ] Coach dashboard
-- [ ] Client management
-- [ ] Workout builder
-- [ ] Exercise library (500+ exercises)
-- [ ] Progress tracking
-- [ ] Messaging system
-- [ ] AI workout generator
-- [ ] Stripe payments
-- [ ] Client mobile app
-
-### Database Schema
-✅ All tables designed and entities created:
-- users, coaches, clients
-- workouts, workout_sets, exercises
-- messages, automations, subscriptions
-
-## 📊 Project Statistics
-
-### Files Created
-- **Backend**: 35+ files
-- **Frontend**: 6 files
-- **Documentation**: 4 files
-- **Configuration**: 5 files
-
-### Total Lines of Code
-- **Backend**: ~2,500 lines
-- **Frontend**: ~400 lines
-- **Total**: ~3,000 lines
-
-## 🛠 Technology Stack
+## In Progress / Not Yet Started
 
 ### Backend
-- NestJS 10.3
-- PostgreSQL (Supabase)
-- Redis (Upstash/Redis Cloud)
-- TypeORM
-- Passport JWT
-- Stripe SDK
-- OpenAI SDK
-- Socket.io
+- [ ] API documentation (Swagger/OpenAPI)
+- [ ] Integration tests
+- [ ] E2E tests
+- [ ] Nutrition module missing controller (service + entities only)
+- [ ] WebSocket event handling (gateway defined, handlers in progress)
+- [ ] Stripe webhook handlers
+- [ ] Ollama provider implementation (interface + OpenAI provider done)
 
 ### Frontend
-- Next.js 14
-- React 19
-- Tailwind CSS 4
-- TypeScript 5
+- [ ] Connect login/signup to backend API
+- [ ] Wire dashboard pages to real data
+- [ ] Workout builder drag-and-drop UI
+- [ ] Calendar view for workouts
+- [ ] Progress charts (weight, measurements)
+- [ ] Real-time chat UI (WebSocket integration)
+- [ ] Notification UI (bell + dropdown)
+- [ ] Exercise library search/filter
+- [ ] AI workout generator UI
+- [ ] Client detail view
+- [ ] Settings page (profile, billing)
+- [ ] Error handling, loading states, empty states
+- [ ] Mobile responsive dashboard
+
+### Phase 2 (Not Started)
+- [ ] Nutrition UI (macro tracking, meal plans)
+- [ ] Groups & challenges UI
+- [ ] Automations builder UI
+- [ ] Custom forms builder UI
+- [ ] Stripe customer portal integration
+
+### Phase 3 (Not Started)
+- [ ] React Native + Expo client app
+- [ ] Custom-branded app builder
+- [ ] Wearable integrations
+- [ ] Video AI (form analysis)
+- [ ] Stripe Connect for coach payouts
+
+## Project Statistics
+
+### Files Created
+- **Backend**: ~96 source files (13 modules)
+- **Frontend**: ~46 source files
+- **Documentation**: 5 files
+- **Configuration**: 6 files
+
+### Total Lines of Code
+- **Backend**: ~6,500 lines
+- **Frontend**: ~3,200 lines
+- **Total**: ~9,700 lines
+
+## Technology Stack
+
+### Backend
+- NestJS 10.3, TypeORM, PostgreSQL (Supabase)
+- Passport JWT, bcrypt
+- Socket.io, Stripe SDK, OpenAI SDK, redis
+- class-validator, class-transformer
+
+### Frontend
+- Next.js 15, React 19, TypeScript 5
+- Tailwind CSS 4, ShadCN UI
+- Zustand, TanStack React Query
+- Socket.io Client, date-fns, zod, react-hook-form
 
 ### Infrastructure
-- Supabase (Database + Auth + Storage)
-- Upstash (Redis)
-- Vercel (planned deployment)
+- Docker Compose (Postgres 16, Redis 7)
+- Supabase (Database, Auth, Storage)
+- Vercel (planned frontend deployment)
 
-## 🚀 Quick Start Commands
+## Quick Start
 
 ```bash
-# 1. Create Supabase project at https://supabase.com
-# 2. Get your DATABASE_URL and API keys
+# 1. Start Postgres and Redis
+docker compose up -d
 
-# Install backend dependencies
+# 2. Backend setup
 cd backend
 npm install
-
-# Setup environment
-cp backend/.env.example backend/.env
-# Edit backend/.env with your Supabase credentials
-
-# Start backend
-cd backend
+cp .env.example .env
+# Edit .env with DATABASE_URL, JWT_SECRET, etc.
 npm run start:dev
-# Tables will auto-create in Supabase!
 
-# Start frontend (in new terminal)
+# 3. Frontend setup (new terminal)
 cd frontend
+npm install
 npm run dev
 ```
 
-## 📝 Notes
+See [SETUP.md](./SETUP.md) and [SUPABASE_SETUP.md](./SUPABASE_SETUP.md) for detailed instructions.
 
-### Important Decisions Made
-1. **Tech Stack**: NestJS + Next.js for type safety and scalability
-2. **Database**: PostgreSQL for robust relational data
-3. **Auth**: JWT with Passport for standard OAuth compatibility
-4. **Styling**: Tailwind CSS for rapid UI development
-5. **Real-time**: WebSockets for messaging
-6. **AI**: OpenAI GPT-4 for workout generation
+## Development Workflow
 
-### Design Choices
-- Brand colors from blueprint: #0A3AFF (primary), #A6FF3F (accent)
-- Inter font for clean, modern look
-- Mobile-first responsive design
-- Clean, card-based UI patterns
-
-### Known Issues
-- Dependencies need to be installed before running
-- All lint errors are expected until dependencies are installed
-- Supabase project must be created and configured
-- Environment variables must be configured with Supabase credentials
-
-## 🔄 Development Workflow
-
-1. **Backend Changes**
-   - Edit files in `backend/src/`
-   - Hot reload is automatic
-   - Check `http://localhost:3001/api/v1`
-
-2. **Frontend Changes**
-   - Edit files in `frontend/src/`
-   - Hot reload is automatic
-   - Check `http://localhost:3000`
-
-3. **Database Changes**
-   - Modify entities in `backend/src/modules/*/entities/`
-   - TypeORM auto-syncs in development (tables update in Supabase)
-   - For production, use migrations
-   - View tables in Supabase dashboard under Table Editor
-
-## 📞 Support & Resources
-
-- **Documentation**: See SETUP.md for detailed setup
-- **Backend API**: See backend/README.md
-- **Blueprint**: See main README.md
-
-## 🎉 What's Working
-
-- ✅ Complete backend structure
-- ✅ Authentication flow design
-- ✅ Database schema
-- ✅ Landing page UI
-- ✅ Login/Signup UI
-- ✅ Supabase configuration
-
-## ⏭ What's Next
-
-The next developer should:
-1. Create a Supabase project and get credentials
-2. Run `npm install` in backend/
-3. Configure `.env` file with Supabase DATABASE_URL
-4. Test backend startup (tables auto-create!)
-5. Begin connecting frontend to API endpoints
+1. **Backend**: Edit files in `backend/src/`, hot reload on `http://localhost:3001/api/v1`
+2. **Frontend**: Edit files in `frontend/src/`, hot reload on `http://localhost:3000`
+3. **Database**: Modify entities in `backend/src/modules/*/entities/`, TypeORM auto-syncs in dev
 
 ---
 
-**Total Development Time So Far**: ~2 hours  
-**Estimated Time to MVP**: 8 weeks remaining  
-**Progress**: ~15% complete
+**Progress**: ~20% complete toward MVP

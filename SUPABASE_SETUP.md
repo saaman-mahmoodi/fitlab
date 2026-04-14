@@ -1,85 +1,72 @@
 # Supabase Setup Guide for FitLab
 
-This guide will walk you through setting up Supabase for the FitLab project.
+This guide covers setting up Supabase as the managed PostgreSQL database for FitLab.
 
 ## Why Supabase?
 
-Supabase provides:
-- **PostgreSQL Database**: Fully managed, scalable
-- **Authentication**: Built-in auth (we're using our custom JWT for now, but can migrate)
-- **Storage**: File storage for workout images, progress photos
-- **Real-time**: WebSocket support for messaging
-- **Free Tier**: Generous free tier for development
-- **Dashboard**: Beautiful UI to manage your data
+- **PostgreSQL Database**: Fully managed, scalable, with real-time support
+- **Connection Pooling**: Built-in PgBouncer for serverless connections
+- **Storage**: File storage for workout images and progress photos
+- **Free Tier**: 500MB database, 1GB storage — enough for development
+- **Dashboard**: Visual table editor, SQL editor, logs
 
 ## Step 1: Create Supabase Project
 
-1. Go to [https://supabase.com](https://supabase.com)
-2. Sign up with GitHub (recommended) or email
-3. Click **"New Project"**
-4. Fill in project details:
-   - **Organization**: Create new or select existing
+1. Go to [https://supabase.com](https://supabase.com) and sign up (GitHub login recommended)
+2. Click **"New Project"**
+3. Fill in:
    - **Name**: `FitLab` or `fitlab-dev`
-   - **Database Password**: Generate strong password (SAVE THIS!)
-   - **Region**: Choose closest to your location
-   - **Pricing Plan**: Free (perfect for development)
-
-5. Click **"Create new project"**
-   - Takes about 2 minutes to provision
-   - Get a coffee ☕
+   - **Database Password**: Generate a strong password (save it!)
+   - **Region**: Choose closest to your users
+   - **Plan**: Free (generous for development)
+4. Wait ~2 minutes for provisioning
 
 ## Step 2: Get Your Credentials
 
-Once your project is ready:
-
 ### API Keys
 
-1. Go to **Settings** (gear icon in sidebar)
-2. Click **API**
-3. Copy these values:
-
-```
-Project URL: https://xxxxx.supabase.co
-anon public key: eyJhbGc...
-service_role secret: eyJhbGc...
-```
+1. Go to **Settings > API**
+2. Copy:
+   - `Project URL` (e.g., `https://xxxxx.supabase.co`)
+   - `anon public` key
+   - `service_role secret` key
 
 ### Database Connection String
 
 1. Go to **Settings > Database**
 2. Scroll to **Connection String**
 3. Select **URI** tab
-4. Copy the connection string
-5. Replace `[YOUR-PASSWORD]` with your database password
+4. Copy and replace `[YOUR-PASSWORD]` with your database password:
 
-It looks like:
 ```
-postgresql://postgres:[YOUR-PASSWORD]@db.xxxxx.supabase.co:5432/postgres
+postgresql://postgres.[project-ref]:[YOUR-PASSWORD]@aws-0-[region].pooler.supabase.com:6543/postgres
 ```
+
+> Use the **pooler** connection string (port 6543) for the backend, as it supports connection pooling.
 
 ## Step 3: Configure Backend
 
-1. Open `backend/.env`
-2. Add your Supabase credentials:
+Edit `backend/.env`:
 
 ```env
-# Supabase Configuration
+# Supabase
 SUPABASE_URL=https://xxxxx.supabase.co
 SUPABASE_ANON_KEY=eyJhbGc...
 SUPABASE_SERVICE_KEY=eyJhbGc...
 
-# Database URL (replace [YOUR-PASSWORD] with actual password)
-DATABASE_URL=postgresql://postgres:your-password@db.xxxxx.supabase.co:5432/postgres
+# Database (use pooler connection string)
+DATABASE_URL=postgresql://postgres.[ref]:[password]@aws-0-[region].pooler.supabase.com:6543/postgres
 
-# JWT Secret (generate with: openssl rand -base64 32)
-JWT_SECRET=your-generated-secret-here
+# JWT (generate your own)
+JWT_SECRET=<generate-with-openssl-rand-base64-32>
 
-# Other config...
+# Redis (local Docker or Upstash)
+REDIS_URL=redis://localhost:6379
 ```
 
-## Step 4: Test Connection
+## Step 4: Verify Connection
 
-Start your backend:
+Start the backend:
 
 ```bash
 cd backend
@@ -88,160 +75,107 @@ npm run start:dev
 
 You should see:
 ```
-[TypeORM] Database connection established
-[NestJS] Nest application successfully started
+[Nest] LOG [TypeOrmModule] Database connection established
+[Nest] LOG [Bootstrap] FitLab API running on: http://localhost:3001/api/v1
 ```
 
-## Step 5: View Your Tables
+## Step 5: Verify Tables
 
-1. In Supabase dashboard, go to **Table Editor** (table icon in sidebar)
-2. You should see your tables automatically created:
-   - `users`
-   - `coaches`
-   - `clients`
-   - `workouts`
-   - `exercises`
-   - `messages`
-   - `subscriptions`
-   - `automations`
+1. In Supabase dashboard, go to **Table Editor**
+2. You should see tables auto-created by TypeORM:
+   - `users`, `coaches`, `clients`
+   - `workouts`, `workout_sets`, `exercises`
+   - `messages`, `conversations`
+   - `progress_photos`, `weight_logs`, `measurements`
+   - `food_logs`, `meal_plans`
+   - `notifications`, `automations`, `subscriptions`
+   - `forms`, `form_responses`
+   - `training_groups`
 
-TypeORM auto-syncs your entities in development mode!
+> TypeORM `synchronize: true` is enabled in development. This auto-creates and updates tables. For production, use migrations instead.
 
-## Step 6: Optional - Set Up Storage
+## Step 6: Set Up Storage (Optional)
 
-For storing workout images and progress photos:
+For workout images and progress photos:
 
-1. Go to **Storage** in Supabase dashboard
-2. Click **"New Bucket"**
-3. Create buckets:
+1. Go to **Storage** in the Supabase dashboard
+2. Create buckets:
    - `workout-images` (public)
    - `progress-photos` (private)
    - `exercise-videos` (public)
-
-4. Set up storage policies in Supabase docs
+3. Configure storage policies as needed
 
 ## Redis Setup (Optional for MVP)
 
 For caching and real-time features, use Upstash:
 
 1. Go to [https://upstash.com](https://upstash.com)
-2. Create account
-3. Create new Redis database
-4. Choose **region closest to your Supabase region**
-5. Copy the `REDIS_URL`
-6. Add to `backend/.env`:
+2. Create a Redis database (choose the same region as your Supabase project)
+3. Copy the connection URL
+4. Add to `backend/.env`:
 
 ```env
 REDIS_URL=redis://default:xxxxx@xxxxx.upstash.io:6379
 ```
 
-You can skip Redis initially and add it later when implementing:
-- Session caching
-- Rate limiting
-- Real-time messaging queues
-
-## Monitoring & Debugging
-
-### Database Queries
-
-View all SQL queries in **Database > Query Performance**
-
-### Logs
-
-View real-time logs in **Logs** section:
-- API logs
-- Database logs
-- Real-time logs
-
-### SQL Editor
-
-Run custom SQL queries in **SQL Editor**:
-
-```sql
--- View all users
-SELECT * FROM users;
-
--- Check table structure
-SELECT column_name, data_type 
-FROM information_schema.columns 
-WHERE table_name = 'users';
-```
+Redis is optional during development. The app will work without it, but some features (rate limiting, caching) will use in-memory fallbacks.
 
 ## Production Checklist
 
-Before going to production:
+Before deploying to production:
 
-- [ ] Move from free tier to paid plan
-- [ ] Enable connection pooling
+- [ ] Switch from free to Pro plan (8GB database minimum)
+- [ ] Enable connection pooling (PgBouncer)
 - [ ] Set up database backups
-- [ ] Configure SSL certificates
 - [ ] Enable Row Level Security (RLS)
-- [ ] Set up monitoring alerts
-- [ ] Create TypeORM migrations (disable synchronize)
-- [ ] Set up staging environment
+- [ ] Set `NODE_ENV=production` (disables TypeORM sync)
+- [ ] Create TypeORM migrations: `npm run typeorm migration:generate -- -n InitSchema`
+- [ ] Run migrations: `npm run typeorm migration:run`
+- [ ] Set strong `JWT_SECRET`
+- [ ] Configure CORS origins
+- [ ] Set up monitoring and alerts
 
 ## Troubleshooting
 
-### "Connection refused" error
+### Connection Refused
 
-- Check DATABASE_URL has correct password
-- Verify no typos in connection string
-- Ensure Supabase project is "Active" (not paused)
+- Verify `DATABASE_URL` has the correct password (special characters must be URL-encoded)
+- Ensure the Supabase project status is "Active" (not paused)
+- Try the direct connection string (port 5432) for debugging
 
-### Tables not creating
+### Tables Not Creating
 
-- Verify `synchronize: true` in TypeORM config
-- Check entity imports in modules
-- Look for TypeScript errors in entities
+- Confirm `NODE_ENV` is `development` (or not set)
+- Check TypeORM entity imports in `app.module.ts`
+- Look for TypeScript errors in startup logs
 
-### SSL errors
+### SSL Errors
 
-Backend is configured with:
+The backend configures SSL automatically:
 ```typescript
-ssl: {
-  rejectUnauthorized: false,
-}
+ssl: configService.get('NODE_ENV') === 'production'
+  ? { rejectUnauthorized: false }
+  : false
 ```
-This should work with Supabase by default.
 
-### Slow queries
+For Supabase, SSL is handled by the connection string.
 
-- Use Supabase Query Performance monitor
-- Add indexes in SQL Editor
-- Optimize TypeORM queries
+### Slow Queries
+
+- Use Supabase **Query Performance** monitor
+- Add indexes via SQL Editor for frequently queried columns
+- Use Supabase **Explain** feature to analyze query plans
 
 ## Cost Estimates
 
-**Free Tier** (Development):
-- 500MB database
-- 1GB file storage
-- 50,000 monthly active users
-- 2GB bandwidth
-
-**Pro Tier** ($25/month) (Production):
-- 8GB database
-- 100GB file storage
-- 100,000 monthly active users
-- 50GB bandwidth
-
-## Next Steps
-
-1. ✅ Supabase project created
-2. ✅ Backend connected
-3. ✅ Tables auto-created
-4. 🔄 Test API endpoints
-5. 🔄 Connect frontend
-6. 🔄 Add Supabase Storage for images
+| Plan | Database | Storage | Monthly Active Users | Price |
+|------|----------|---------|----------------------|-------|
+| Free | 500MB | 1GB | 50,000 | $0 |
+| Pro | 8GB | 100GB | 100,000 | $25/mo |
 
 ## Resources
 
 - [Supabase Docs](https://supabase.com/docs)
 - [TypeORM with Supabase](https://supabase.com/docs/guides/integrations/typeorm)
-- [Supabase Auth](https://supabase.com/docs/guides/auth)
+- [Supabase Connection Pooling](https://supabase.com/docs/guides/database/connecting-to-postgres#connection-pooler)
 - [Upstash Redis](https://docs.upstash.com/redis)
-
----
-
-**Need Help?**
-- Supabase Discord: https://discord.supabase.com
-- Supabase GitHub: https://github.com/supabase/supabase

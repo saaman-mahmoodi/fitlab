@@ -1,133 +1,200 @@
 # FitLab Backend API
 
-AI-powered fitness coaching platform backend built with NestJS.
+NestJS-based API for the FitLab AI-powered coaching platform.
 
 ## Tech Stack
 
-- **Framework**: NestJS 10.3
-- **Database**: PostgreSQL (Supabase)
-- **ORM**: TypeORM
-- **Cache**: Redis (Upstash or Redis Cloud)
-- **Authentication**: Passport + JWT
-- **Validation**: class-validator, class-transformer
-- **API Documentation**: Swagger/OpenAPI
-- **AI**: OpenAI GPT-4
-- **Real-time**: WebSockets (Socket.io)
-- **Payments**: Stripe
+| Category | Technology |
+|----------|------------|
+| Framework | NestJS 10.3 |
+| Database | PostgreSQL (Supabase or local Docker) |
+| ORM | TypeORM |
+| Cache | Redis (Upstash or local Docker) |
+| Auth | Passport + JWT + bcrypt |
+| Validation | class-validator, class-transformer |
+| Real-time | Socket.io (WebSockets) |
+| AI | OpenAI SDK, Ollama provider |
+| Payments | Stripe SDK |
+| Scheduling | @nestjs/schedule |
+| Rate Limiting | @nestjs/throttler |
 
 ## Prerequisites
 
-- Node.js 18+ and npm
-- PostgreSQL 16
-- Redis 7
-- Docker and Docker Compose (recommended)
+- Node.js 18+ and npm 9+
+- PostgreSQL 16 (local Docker or Supabase)
+- Redis 7 (local Docker or Upstash)
 
 ## Quick Start
 
-### 1. Install Dependencies
-
 ```bash
+# Install dependencies
 npm install
-```
 
-### 2. Set Up Environment
-
-```bash
+# Configure environment
 cp .env.example .env
-# Add your Supabase DATABASE_URL and credentials
-```
+# Edit .env with your DATABASE_URL, JWT_SECRET, etc.
 
-### 4. Run development server
-
-```bash
+# Start development server
 npm run start:dev
 ```
 
-### 5. Access the API
+API available at: `http://localhost:3001/api/v1`
 
-API will be available at: `http://localhost:3001/api/v1`
+Tables auto-create via TypeORM synchronization in development mode.
 
-The database tables will be automatically created via TypeORM synchronization in development mode.
+## Scripts
 
-## Development Scripts
-
-```bash
-# Development mode with hot-reload
-npm run start:dev
-
-# Production build
-npm run build
-
-# Start production server
-npm run start:prod
-
-# Run tests
-npm run test
-
-# Run linter
-npm run lint
-```
+| Command | Description |
+|---------|-------------|
+| `npm run start:dev` | Dev mode with hot reload |
+| `npm run build` | Production build |
+| `npm run start:prod` | Run production build |
+| `npm run test` | Run unit tests |
+| `npm run test:watch` | Run tests in watch mode |
+| `npm run test:cov` | Run tests with coverage |
+| `npm run lint` | Run ESLint |
+| `npm run seed` | Seed database with exercises |
 
 ## API Endpoints
 
+All endpoints prefixed with `/api/v1`.
+
 ### Authentication
 
-- `POST /api/v1/auth/register` - Register new user
-- `POST /api/v1/auth/login` - Login user
+| Method | Endpoint | Auth | Description |
+|--------|----------|------|-------------|
+| POST | `/auth/register` | None | Register new user |
+| POST | `/auth/login` | None | Login (local strategy) |
+| POST | `/auth/refresh` | None | Refresh JWT token |
 
 ### Users
 
-- `GET /api/v1/users/me` - Get current user profile
+| Method | Endpoint | Auth | Description |
+|--------|----------|------|-------------|
+| GET | `/users/me` | JWT | Get current user profile |
+| PUT | `/users/me` | JWT | Update profile |
+| PUT | `/users/me/password` | JWT | Change password |
 
-## Database Schema
+### Coaches
 
-See entity files in `src/modules/*/entities/` for complete schema.
+| Method | Endpoint | Auth | Description |
+|--------|----------|------|-------------|
+| GET | `/coaches/me` | Coach | Get coach profile |
+| PUT | `/coaches/me` | Coach | Update coach profile |
 
-### Main Entities
+### Clients
 
-- **Users**: User accounts (coaches and clients)
-- **Coaches**: Coach profiles and settings
-- **Clients**: Client profiles and metrics
-- **Workouts**: Workout plans and schedules
-- **Exercises**: Exercise library
-- **Messages**: Real-time messaging
-- **Automations**: Workflow automations
-- **Subscriptions**: Coach subscription plans
+| Method | Endpoint | Auth | Description |
+|--------|----------|------|-------------|
+| GET | `/clients` | Coach | List clients (paginated, searchable) |
+| GET | `/clients/:id` | Coach | Get client by ID |
+| POST | `/clients` | Coach | Create client |
+| PUT | `/clients/:id` | Coach | Update client |
+| DELETE | `/clients/:id` | Coach | Deactivate client |
 
-## Environment Variables
+### Workouts
 
-See `.env.example` for all required environment variables.
+| Method | Endpoint | Auth | Description |
+|--------|----------|------|-------------|
+| GET | `/workouts` | JWT | List workouts (filterable by clientId) |
+| GET | `/workouts/:id` | JWT | Get workout |
+| POST | `/workouts` | Coach | Create workout |
+| PUT | `/workouts/:id` | Coach | Update workout |
+| DELETE | `/workouts/:id` | Coach | Delete workout |
+| POST | `/workouts/:id/sets` | Coach | Add set to workout |
+| PUT | `/workouts/sets/:setId` | JWT | Update set |
+| DELETE | `/workouts/sets/:setId` | Coach | Remove set |
 
-### Required Variables
+### Exercises
 
-- `DATABASE_URL`: PostgreSQL connection string
-- `REDIS_URL`: Redis connection string
-- `JWT_SECRET`: JWT secret key
-- `STRIPE_SECRET_KEY`: Stripe API key
-- `OPENAI_API_KEY`: OpenAI API key
+| Method | Endpoint | Auth | Description |
+|--------|----------|------|-------------|
+| GET | `/exercises` | JWT | List exercises (filterable) |
+| GET | `/exercises/:id` | JWT | Get exercise |
+| POST | `/exercises` | Coach | Create exercise |
+| PUT | `/exercises/:id` | Coach | Update exercise |
+| DELETE | `/exercises/:id` | Coach | Delete exercise |
+
+### AI
+
+| Method | Endpoint | Auth | Description |
+|--------|----------|------|-------------|
+| POST | `/ai/generate-workout` | Coach | Generate AI workout |
+| POST | `/ai/adjust-workout` | Coach | Adjust workout via AI |
+| POST | `/ai/progress-summary` | Coach | Generate progress summary |
+| POST | `/ai/chat` | JWT | AI chat assistant |
+
+Additional modules (progress, nutrition, messages, notifications, automations, subscriptions, forms, groups) follow similar REST patterns with JWT and role-based guards.
 
 ## Project Structure
 
 ```
-backend/
-├── src/
-│   ├── modules/          # Feature modules
-│   │   ├── auth/         # Authentication
-│   │   ├── users/        # User management
-│   │   ├── coaches/      # Coach features
-│   │   ├── clients/      # Client management
-│   │   ├── workouts/     # Workout builder
-│   │   ├── exercises/    # Exercise library
-│   │   ├── messages/     # Messaging
-│   │   ├── automations/  # Workflow automation
-│   │   ├── subscriptions/# Billing
-│   │   └── ai/          # AI services
-│   ├── app.module.ts     # Root module
-│   └── main.ts           # Application entry
-├── test/                 # Test files
-├── docker-compose.yml    # Docker services
-└── package.json
+src/
+├── app.module.ts              # Root module (registers all modules)
+├── main.ts                    # Entry point (CORS, validation, logging)
+├── common/
+│   ├── decorators/            # @CurrentUser, @Public, @Roles
+│   ├── dto/                   # PaginationDto
+│   ├── filters/               # AllExceptionsFilter
+│   ├── guards/                # JwtAuthGuard, RolesGuard
+│   ├── interceptors/          # LoggingInterceptor, TransformInterceptor
+│   ├── interfaces/            # UserPayload
+│   └── pipes/                 # ParseDatePipe
+├── database/
+│   └── seeds/                 # Exercise seed data
+└── modules/
+    ├── ai/                    # OpenAI + Ollama workout generation
+    ├── auth/                   # JWT/local strategies, register/login/refresh
+    ├── automations/            # Trigger/action workflows
+    ├── clients/                # Client CRUD
+    ├── coaches/               # Coach profiles
+    ├── exercises/              # Exercise library
+    ├── forms/                 # Custom intake forms
+    ├── groups/                # Training groups
+    ├── messages/               # Real-time chat (WebSocket gateway)
+    ├── notifications/          # Push & in-app notifications
+    ├── nutrition/              # Food logs & meal plans
+    ├── progress/               # Weight, measurements, photos
+    ├── subscriptions/          # Stripe billing
+    ├── users/                  # User accounts & roles
+    └── workouts/               # Workout builder with sets
 ```
+
+## Environment Variables
+
+See `.env.example` for all required variables:
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `DATABASE_URL` | Yes | PostgreSQL connection string |
+| `REDIS_URL` | No | Redis connection (rate limiting, caching) |
+| `JWT_SECRET` | Yes | Secret for JWT token signing |
+| `JWT_EXPIRATION` | No | Access token expiry (default: 15m) |
+| `JWT_REFRESH_EXPIRATION` | No | Refresh token expiry (default: 7d) |
+| `PORT` | No | Server port (default: 3001) |
+| `API_PREFIX` | No | API route prefix (default: api/v1) |
+| `NODE_ENV` | No | Environment (development/production) |
+| `FRONTEND_URL` | No | CORS origin (default: http://localhost:3000) |
+| `STRIPE_SECRET_KEY` | No | Stripe API key for billing |
+| `OPENAI_API_KEY` | No | OpenAI API key for AI features |
+
+## Database Schema
+
+Tables are auto-created by TypeORM in development. Key entities:
+
+- **users** — User accounts (coach/client roles)
+- **coaches** — Coach profiles and business branding
+- **clients** — Client metrics, goals, tags, status
+- **workouts** / **workout_sets** — Workout plans with nested sets
+- **exercises** — Exercise library with categories and equipment
+- **progress_photos**, **weight_logs**, **measurements** — Progress tracking
+- **messages**, **conversations** — Real-time messaging
+- **notifications** — Push and in-app alerts
+- **automations** — Workflow triggers and actions
+- **subscriptions** — Stripe billing plans
+- **forms**, **form_responses** — Custom intake forms
+- **training_groups** — Group challenges
+- **food_logs**, **meal_plans** — Nutrition tracking
 
 ## License
 
