@@ -1,8 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, In } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { TrainingGroup } from './entities/training-group.entity';
 import { CreateGroupDto, UpdateGroupDto, AddMembersDto, RemoveMembersDto } from './dto';
 import { CoachesService } from '../coaches/coaches.service';

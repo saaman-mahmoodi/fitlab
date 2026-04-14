@@ -53,7 +53,7 @@ export class GroupsController {
     return this.groupsService.addMembers(id, dto);
   }
 
-  @Delete(':id/members')
+  @Post(':id/members/remove')
   async removeMembers(@Param('id', ParseUUIDPipe) id: string, @Body() dto: RemoveMembersDto) {
     return this.groupsService.removeMembers(id, dto);
   }
