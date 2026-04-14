@@ -15,6 +15,11 @@ import {
   X,
   MessageSquare,
   Sparkles,
+  Zap,
+  Utensils,
+  ClipboardList,
+  CreditCard,
+  UsersRound,
 } from 'lucide-react';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
@@ -25,8 +30,13 @@ const navigation = [
   { name: 'Workouts', href: '/dashboard/workouts', icon: Dumbbell },
   { name: 'Messages', href: '/dashboard/messages', icon: MessageSquare },
   { name: 'AI Tools', href: '/dashboard/ai', icon: Sparkles },
+  { name: 'Nutrition', href: '/dashboard/nutrition', icon: Utensils },
+  { name: 'Groups', href: '/dashboard/groups', icon: UsersRound },
   { name: 'Exercises', href: '/dashboard/exercises', icon: BarChart3 },
   { name: 'Progress', href: '/dashboard/progress', icon: TrendingUp },
+  { name: 'Forms', href: '/dashboard/forms', icon: ClipboardList },
+  { name: 'Automations', href: '/dashboard/automations', icon: Zap },
+  { name: 'Billing', href: '/dashboard/billing', icon: CreditCard },
   { name: 'Settings', href: '/dashboard/settings', icon: Settings },
 ];
 

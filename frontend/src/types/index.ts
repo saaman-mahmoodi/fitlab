@@ -197,6 +197,150 @@ export interface PaginatedResponse<T> {
   timestamp: string;
 }
 
+export type TriggerType = 'missed_workouts' | 'no_weight_change' | 'pr_logged' | 'scheduled_time' | 'client_milestone';
+export type ActionType = 'send_message' | 'send_email' | 'create_task' | 'update_client';
+
+export interface Automation {
+  id: string;
+  coach_id: string;
+  name: string;
+  trigger: TriggerType;
+  condition: {
+    threshold?: number;
+    days?: number;
+    metric?: string;
+    comparison?: string;
+  };
+  action: ActionType;
+  action_config: {
+    message?: string;
+    email_template?: string;
+    task_title?: string;
+    update_fields?: Record<string, unknown>;
+  };
+  is_active: boolean;
+  execution_count: number;
+  last_executed_at?: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export type MealType = 'breakfast' | 'lunch' | 'dinner' | 'snack';
+
+export interface MealPlan {
+  id: string;
+  client_id: string;
+  name: string;
+  description?: string;
+  start_date: string;
+  end_date?: string;
+  daily_calories_target?: number;
+  macro_targets?: {
+    protein_g?: number;
+    carbs_g?: number;
+    fat_g?: number;
+    fiber_g?: number;
+  };
+  is_active: boolean;
+  generated_by_ai: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface FoodLog {
+  id: string;
+  client_id: string;
+  date: string;
+  meal_type: MealType;
+  food_name: string;
+  calories?: number;
+  protein_g?: number;
+  carbs_g?: number;
+  fat_g?: number;
+  fiber_g?: number;
+  serving_size?: number;
+  serving_unit?: string;
+  notes?: string;
+  created_at: string;
+}
+
+export interface MacroSummary {
+  date: string;
+  total_calories: number;
+  total_protein_g: number;
+  total_carbs_g: number;
+  total_fat_g: number;
+  total_fiber_g: number;
+  meals: FoodLog[];
+}
+
+export interface TrainingGroup {
+  id: string;
+  coach_id: string;
+  name: string;
+  description?: string;
+  members?: Client[];
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export type FormStatus = 'draft' | 'published' | 'closed';
+export type FormFieldType = 'text' | 'textarea' | 'number' | 'select' | 'multiselect' | 'checkbox' | 'date' | 'scale';
+
+export interface FormField {
+  id: string;
+  type: FormFieldType;
+  label: string;
+  required?: boolean;
+  options?: string[];
+  placeholder?: string;
+  min_value?: number;
+  max_value?: number;
+}
+
+export interface Form {
+  id: string;
+  coach_id: string;
+  title: string;
+  description?: string;
+  fields: FormField[];
+  status: FormStatus;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface FormResponse {
+  id: string;
+  form_id: string;
+  client_id: string;
+  answers: Record<string, unknown>;
+  created_at: string;
+}
+
+export type SubscriptionPlan = 'starter' | 'growth' | 'pro' | 'elite';
+export type SubscriptionStatus = 'active' | 'past_due' | 'canceled' | 'trialing';
+
+export interface Subscription {
+  id: string;
+  coach_id: string;
+  plan: SubscriptionPlan;
+  status: SubscriptionStatus;
+  amount: number;
+  currency: string;
+  renewal_date: string;
+  trial_end_date?: string;
+  canceled_at?: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface SubscriptionPlanInfo {
+  plan: string;
+  price: number;
+  currency: string;
+}
+
 export interface ApiError {
   success: false;
   statusCode: number;

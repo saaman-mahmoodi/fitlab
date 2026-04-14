@@ -5,3 +5,8 @@ export { messagesApi } from './messages';
 export { aiApi } from './ai';
 export type { AiWorkoutResponse, AiSummaryResponse } from './ai';
 export { notificationsApi } from './notifications';
+export { automationsApi } from './automations';
+export { nutritionApi } from './nutrition';
+export { groupsApi } from './groups';
+export { formsApi } from './forms';
+export { subscriptionsApi } from './subscriptions';
