@@ -15,6 +15,9 @@ import { AutomationsModule } from './modules/automations/automations.module';
 import { AiModule } from './modules/ai/ai.module';
 import { ProgressModule } from './modules/progress/progress.module';
 import { NotificationsModule } from './modules/notifications/notifications.module';
+import { NutritionModule } from './modules/nutrition/nutrition.module';
+import { GroupsModule } from './modules/groups/groups.module';
+import { FormsModule } from './modules/forms/forms.module';
 
 @Module({
   imports: [
@@ -61,6 +64,9 @@ import { NotificationsModule } from './modules/notifications/notifications.modul
     AiModule,
     ProgressModule,
     NotificationsModule,
+    NutritionModule,
+    GroupsModule,
+    FormsModule,
   ],
 })
 export class AppModule {}

@@ -1,0 +1,1 @@
+export { TrainingGroup } from './training-group.entity';
