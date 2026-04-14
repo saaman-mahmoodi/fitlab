@@ -44,7 +44,7 @@ export class GroupsService {
     });
 
     if (dto.member_ids && dto.member_ids.length > 0) {
-      const clients = await this.clientRepo.findByIds(dto.member_ids);
+      const clients = await this.clientRepo.find({ where: { id: In(dto.member_ids) } });
       group.members = clients;
     }
 
@@ -64,7 +64,7 @@ export class GroupsService {
 
   async addMembers(id: string, dto: AddMembersDto): Promise<TrainingGroup> {
     const group = await this.findById(id);
-    const clients = await this.clientRepo.findByIds(dto.client_ids);
+    const clients = await this.clientRepo.find({ where: { id: In(dto.client_ids) } });
     group.members = [...group.members, ...clients];
     return this.groupRepo.save(group);
   }
